@@ -370,22 +370,7 @@ function GM:PlayerLoadout(ply)
 	end
 end
 function GM:PlayerSetModel(ply)
-	local ModelToSet
-	if ply:IsZombie() then
-		if cvars.Bool("zp_admin_zombie_model", false) then
-			ModelToSet = AdminZombiePlayerModel
-		else
-			ModelToSet = ply:GetZombieClass().PModel
-		end
-	else
-		if cvars.Bool("zp_admin_human_model", false) then
-			ModelToSet = AdminHumanPlayerModel
-		else
-			ModelToSet = ply:GetHumanClass().PModel
-		end
-	end
-	ply:SetModel(ModelToSet)
-	ply:SetupHands()
+	ply:SetPlayerModel()
 end
 function GM:PlayerCanPickupWeapon(ply, wep)
 	if(ply:IsZombie()) then

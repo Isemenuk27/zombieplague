@@ -517,8 +517,7 @@ function PLAYER:Infect(SilentInfection)
 	end
 	self:AllowFlashlight(false)
 	
-	self:SetModel(ZombieClass.PModel)
-	self:SetupHands()
+	self:SetPlayerModel()
 	
 	ZombieClass:WeaponGive(self)
 
@@ -565,14 +564,13 @@ function PLAYER:MakeHuman()
 	self:SetCrouchedWalkSpeed(HumanClass.CrouchSpeed)
 	self:SetAuxGravity(HumanClass.Gravity)
 	self:SetJumpPower(HumanClass.JumpPower)
-	self:SetModel(HumanClass.PModel)
+	self:SetPlayerModel()
 	self:SetMaxBreath(HumanClass.Breath)
 	self:SetBreath(HumanClass.Breath)
 	self:SetMaxBatteryCharge(HumanClass.Battery)
 	self:SetDamageAmplifier(HumanClass.DamageAmplifier)
 	self:SetFootstep(HumanClass.Footstep)
 	self:AllowFlashlight(true)
-	self:SetupHands()
 	self:SetPrimaryWeaponGiven(false)
 	self:SetSecondaryWeaponGiven(false)
 	self:SetMeleeWeaponGiven(false)
@@ -622,6 +620,28 @@ function PLAYER:MakeHuman()
 		self:SetScreenFilter(nil)
 	end
 end
+function PLAYER:SetPlayerModel(PlayerModelOverride)
+	local ModelToSet
+	if PlayerModelOverride then
+		ModelToSet = PlayerModelOverride
+	else
+		if self:IsZombie() then
+			if cvars.Bool("zp_admin_zombie_model", false) && self:IsAdmin() then
+				ModelToSet = AdminZombiePlayerModel
+			else
+				ModelToSet = self:GetZombieClass().PModel
+			end
+		else
+			if cvars.Bool("zp_admin_human_model", false) && self:IsAdmin() then
+				ModelToSet = AdminHumanPlayerModel
+			else
+				ModelToSet = self:GetHumanClass().PModel
+			end
+		end
+	end
+	self:SetModel(ModelToSet)
+	self:SetupHands()
+end
 function PLAYER:SetDamageAmplifier(DamageAmplifier)
 	self.DamageAmplifier = DamageAmplifier
 end
@@ -654,7 +674,7 @@ function PLAYER:MakeNemesis()
 		self:SetAuxGravity(NemesisClass.Gravity)
 	end
 	if !cvars.Bool("zp_nemesis_override_player_mode", false) then
-		self:SetModel(NemesisClass.PlayerModel)
+		self:SetPlayerModel(NemesisClass.PlayerModel)
 	end
 	self:SetFootstep(true)
 	self:SetDamageAmplifier(cvars.Number("zp_nemesis_damage", 10))
@@ -688,7 +708,7 @@ function PLAYER:MakeSurvivor()
 		self:SetAuxGravity(SurvivorClass.Gravity)
 	end
 	if !cvars.Bool("zp_survivor_override_player_mode", false) then
-		self:SetModel(SurvivorClass.PlayerModel)
+		self:SetPlayerModel(SurvivorClass.PlayerModel)
 	end
 	self:SetFootstep(false)
 	self:SetDamageAmplifier(cvars.Number("zp_survivor_damage", 2.0))
