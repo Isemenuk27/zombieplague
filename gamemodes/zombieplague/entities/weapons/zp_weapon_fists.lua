@@ -122,7 +122,7 @@ function SWEP:DealDamage()
 		dmginfo:SetAttacker( attacker )
 
 		dmginfo:SetInflictor( self )
-		dmginfo:SetDamage(math.random(8, 12))
+		dmginfo:SetDamage( 20 )
 
 		if ( anim == "fists_left" ) then
 			dmginfo:SetDamageForce( self.Owner:GetRight() * 4912 + self.Owner:GetForward() * 9998 ) -- Yes we need those specific numbers
