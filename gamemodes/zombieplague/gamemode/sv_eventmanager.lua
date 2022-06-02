@@ -125,6 +125,14 @@ function GM:EntityTakeDamage(Target, DmgInfo)
 			if Target:IsPlayer() && RoundManager:GetRoundState() != ROUND_PLAYING then
 				return true
 			end
+			
+			if Attacker:IsHuman() then --Disable SLAM griefing
+				if Target:GetClass() == "weapon_slam" then
+					if Target:GetOwner() != Attacker then
+						DmgInfo:SetDamage(0)
+					end
+				end
+			end
 		end
 		hook.Call("ZPDamageAttackerIsPlayer", GAMEMODE, Attacker, Target, DmgInfo)
 	end
@@ -425,12 +433,14 @@ timer.Create("SecondTickManager", 1, 0, function()
 	hook.Call("SecondTickManager")
 end)
 net.Receive("RequestSpectator", function(len, ply)
-	if ply:Team() != TEAM_SPECTATOR then
-		RoundManager:RemovePlayerToPlay(ply)
-		ply:KillSilent()
-		ply:Spectate(OBS_MODE_ROAMING)
-	else
-		RoundManager:AddPlayerToPlay(ply)
+	if RoundManager:GetRoundState() != ROUND_PLAYING then
+		if ply:Team() != TEAM_SPECTATOR then
+			RoundManager:RemovePlayerToPlay(ply)
+			ply:KillSilent()
+			ply:Spectate(OBS_MODE_ROAMING)
+		else
+			RoundManager:AddPlayerToPlay(ply)
+		end
 	end
 end)
 net.Receive("RequestNightvision", function(len, ply)
@@ -557,6 +567,7 @@ hook.Add("ZPLastHumanEvent", "LastHumanHealth", function()
 	end
 end)
 hook.Add("ZPLastZombieEvent", "LastZombieHealth", function()
+	/*
 	local Mode = cvars.Number("zp_last_zombie_reward_mode", 0)
 	local LastZombie = table.Random(RoundManager:GetAliveZombies())
 	if Mode == 1 then
@@ -564,6 +575,7 @@ hook.Add("ZPLastZombieEvent", "LastZombieHealth", function()
 	elseif Mode == 2 then
 		LastZombie:SetHealth(LastZombie:Health() + cvars.Number("zp_last_zombie_reward_health", 25))
 	end
+	*/
 end)
 
 util.AddNetworkString("RequestSpectator")

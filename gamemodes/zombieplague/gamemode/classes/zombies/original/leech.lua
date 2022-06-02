@@ -8,5 +8,6 @@ ZPClass.CrouchSpeed = 0.5
 ZPClass.Gravity = 0.7
 ZPClass.InfectionFunction = function(Attacker, Infected)
 	Attacker:SetHealth(Attacker:Health() + 500)
+	--Attacker:AddPoints(3)
 end
 ClassManager:AddZPClass("LeechZombie", ZPClass, TEAM_ZOMBIES)

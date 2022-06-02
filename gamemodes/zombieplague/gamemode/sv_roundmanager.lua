@@ -200,6 +200,7 @@ function RoundManager:StartRound(RoundToStart, ply)
 	RoundToStart.StartFunction(ply)
 	self:SetSpecialRound(RoundToStart.SpecialRound)
 	self:SetRespawn(RoundToStart.Respawn)
+	
 	if RoundToStart.StartSound then
 		BroadcastSound(SafeTableRandom(RoundToStart.StartSound))
 	end
@@ -483,6 +484,7 @@ function RoundManager:AddDefaultRounds()
 			table.RemoveByValue(Players, v)
 			if i % 2 == 0 then
 				v:Infect()
+				v:SetHealth(v:GetMaxHealth() + (v:GetMaxHealth() / 50))
 			end
 			i = i + 1
 

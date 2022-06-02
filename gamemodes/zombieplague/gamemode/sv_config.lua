@@ -11,8 +11,9 @@ AdminZombiePlayerModel = "models/player/zombie_soldier.mdl"
 NemesisClass = {Health = 5000,
 		Speed = 270,
 		RunSpeed = 270,
-		CrouchedSpeed = 1,
+		CrouchedSpeed = 0.9,
 		Gravity = 0.5,
+		Ability = false,
 		PlayerModel = "models/player/zombie_soldier.mdl"
 	}
 SurvivorClass = {Health = 250,
