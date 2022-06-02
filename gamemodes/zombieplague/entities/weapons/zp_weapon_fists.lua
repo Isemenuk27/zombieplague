@@ -30,6 +30,10 @@ SWEP.HitDistance = 40
 
 local HitSound = Sound( "Flesh.ImpactHard" )
 
+if CLIENT then
+	killicon.Add( "zp_weapon_fists", "HUD/killicons/default", Color( 255, 80, 0, 255 ) )
+end
+
 function SWEP:Initialize()
 
 	self:SetHoldType( "fist" )
