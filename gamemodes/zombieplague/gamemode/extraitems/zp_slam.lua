@@ -1,6 +1,7 @@
 ExtraItem.ID = "ZPSlam"
 ExtraItem.Name = "ExtraItemSlamName"
 ExtraItem.Price = 6
+ExtraItem.BuySounds = { 'weapons/slam/mine_mode.wav' }
 function ExtraItem:OnBuy(ply)
 	local Weap = ply:GetWeapon("weapon_slam")
 	if IsValid(Weap) then
